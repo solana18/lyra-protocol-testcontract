@@ -1,0 +1,19 @@
+dist/
+.lyra/
+.idea/
+.openzeppelin
+node_modules/
+**/.DS_Store
+local/
+#Hardhat files
+cache/
+out/
+artifacts/
+typechain/
+artifacts-ovm/
+typechain-types/
+coverage/
+coverage.json
+.env.private*
+yarn-error.log
+.vscode/
