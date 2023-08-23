@@ -15,6 +15,7 @@ import "./libraries/Math.sol";
 import "./LiquidityPool.sol";
 import "./OptionMarket.sol";
 import "./OptionGreekCache.sol";
+import "hardhat/console.sol";
 
 /**
  * @title OptionMarketPricer

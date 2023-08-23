@@ -10,10 +10,7 @@ import "../OptionMarket.sol";
  * @dev contract for atomic transaction.
  */
 contract Straddle is ReentrancyGuard {
-
   OptionMarket private market;
-
-
 
   constructor(OptionMarket _market) {
     market = _market;
@@ -21,12 +18,13 @@ contract Straddle is ReentrancyGuard {
 
   function buyStraddle(address quoteAsset, uint _strikeId, uint _amount, uint _collateral) external nonReentrant {
     IERC20(quoteAsset).transferFrom(msg.sender, address(this), uint(_collateral));
+    IERC20(quoteAsset).approve(address(market), uint(_collateral));
 
     OptionMarket.TradeInputParameters memory paramsCall = OptionMarket.TradeInputParameters({
       strikeId: _strikeId,
       positionId: 0,
       amount: _amount,
-      setCollateralTo: _collateral,
+      setCollateralTo: 0,
       iterations: 1,
       minTotalCost: 0,
       maxTotalCost: type(uint128).max,
@@ -39,7 +37,7 @@ contract Straddle is ReentrancyGuard {
       strikeId: _strikeId,
       positionId: 0,
       amount: _amount,
-      setCollateralTo: _collateral,
+      setCollateralTo: 0,
       iterations: 1,
       minTotalCost: 0,
       maxTotalCost: type(uint128).max,
@@ -47,7 +45,5 @@ contract Straddle is ReentrancyGuard {
       referrer: address(0)
     });
     market.openPosition(paramsPut);
-    
-
   }
 }

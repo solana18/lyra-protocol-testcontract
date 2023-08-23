@@ -20,7 +20,6 @@ import "./OptionGreekCache.sol";
 import "./ShortCollateral.sol";
 import "./OptionMarketPricer.sol";
 
-
 /**
  * @title OptionMarket
  * @author Lyra
@@ -338,10 +337,9 @@ contract OptionMarket is Owned, SimpleInitializable, ReentrancyGuard {
     emit StrikeSkewSet(strikeId, skew);
   }
 
-
   /**
    * @notice Sets the maximum amount of Base that can be used to collateral Short calls(base)
-   * 
+   *
    * @param _baseLimit The maximum amount of base that can be used to collateralise shorts in base decimals
    */
   function setBaseLimit(uint _baseLimit) external onlyOwner {
@@ -589,6 +587,7 @@ contract OptionMarket is Owned, SimpleInitializable, ReentrancyGuard {
       false
     );
     OptionMarketPricer.TradeResult[] memory tradeResults;
+    
     (trade.amount, result.totalCost, result.totalFee, tradeResults) = _doTrade(
       strike,
       board,
@@ -987,16 +986,16 @@ contract OptionMarket is Owned, SimpleInitializable, ReentrancyGuard {
           baseAsset.decimals()
         );
         // add base limit here to prevent trades that are above the base limit
-        uint shortCollateralBalance = baseAsset.balanceOf(address(shortCollateral)); 
+        uint shortCollateralBalance = baseAsset.balanceOf(address(shortCollateral));
 
         if (shortCollateralBalance + pendingCollateralConverted > baseLimit) {
-            revert BaseLimitExceeded(
-              address(this),
-              msg.sender,
-              address(shortCollateral),
-              shortCollateralBalance,
-              uint(pendingCollateral)
-            );
+          revert BaseLimitExceeded(
+            address(this),
+            msg.sender,
+            address(shortCollateral),
+            shortCollateralBalance,
+            uint(pendingCollateral)
+          );
         }
 
         if (
@@ -1021,7 +1020,6 @@ contract OptionMarket is Owned, SimpleInitializable, ReentrancyGuard {
         shortCollateral.sendQuoteCollateral(msg.sender, uint(-pendingCollateral));
       }
     }
-
   }
 
   /// @dev update all exposures per strike and optionType
@@ -1298,7 +1296,13 @@ contract OptionMarket is Owned, SimpleInitializable, ReentrancyGuard {
     uint tradeAmount,
     uint totalAmount
   );
-  error BaseLimitExceeded(address thrower, address trader, address shortCollateral, uint shortCollateralBalance, uint pendingCollateral);
+  error BaseLimitExceeded(
+    address thrower,
+    address trader,
+    address shortCollateral,
+    uint shortCollateralBalance,
+    uint pendingCollateral
+  );
 
   // Access
   error OnlySecurityModule(address thrower, address caller, address securityModule);
